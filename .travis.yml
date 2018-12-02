@@ -6,14 +6,16 @@ services:
 install: true
 
 env:
-  - GROUP=weaveworksdemos COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG REPO=load-test;
+  - GROUP=fjudith COMMIT=$TRAVIS_COMMIT TAG=$TRAVIS_TAG REPO=load-test;
+  - secure: "LNes6tHw40T5lyJ55qsP7gTcb/24146FBxO9ZwcmZ1R03JxniGOgtl2wzqJVNkatprnAyUBGAXyQVSUPT6EaNklOqp4LwkHzTxIBqPS8tujcXUInD6ZCUd95teDcwODTWJob1llgLGzkNNgFshwTdczKIkRaZSoLxldL6Shy1RU+PX5OnoXWz115IsyqNQChGHI++9vT4lxN7RdVHRID1vub9qTsd5HgVc7dVZuJSWn3jXdd1Vi5RGGSVLvIvvR8MQEhpap/TuM5A1QGmJdBp/SjjvLjrUm1Y7Ux4UGvwH3emfFxL99O6G+BwH7T9c8hIi2ZuIR79Sw78FxifIldc3FYbWBnP/7AgXLIYPH5I7LdU8BkRQJqquDzv+B4yvSDUoxF5f7o6t/bnzNbfIunypBRD2MnUv8A80sbiyHvoQI8LgSlKg9bY6WRb7JDd0D/Scs0KVL8W+3WBOOMUAYi1jCHF4wyXo/fTiBn6myb1O0ic5NhPx3/jeN9pGYllX/hiz29rR80ZXwj+hgiB12h6lz+8kdDkC6pOr5wEPrrmY+Ng128fH1dafRmu3zPYJI10wX127z27dF+lRUGFfd7C0cnoMbPwpDxRoeCoGz4xpBTQERLKeNwI4zHRWmEVHQTTUZZKPkfz66SoN3m33UnEo0XyZUoPY7j57+AqpTmFxw="
+  - secure: "N3U3yup2JHCWIgk04ZhsxlvTbxuxvs5lnOB3oK2CTt7zGMDMZGYypbaYEY3Lwl1LL0b/vXFtXkd4OefQSRhRGoaKVfWNDUCSwjPJl1zUl+3uw5ikFmF2XpY7KB8wpifkfcABRQkFxWC9DoX+tI6agolkRw4ImYXZ8bNOXVcBrzz/zxlmNnmFjTwDQtTmxC4MOk5/ozL3hIRmNpDBuRDgxGLkB7/8jaHXkonPIrL4VFCiyD6FSKpK/6O7RNDFzDhu4MczP2AJB4HAbPCgkzbq9Y5gIGFql3QTBji/KbY7szGBCc21AUWGUe68zm/RjpDO7qmS6U8fVSo6OzdJc2xU2dAeIJpxXseWsJ/5ZrAc7m4hReita7KlGv7kIwAGefdWmg+Z7nyp4Z/vpZzf5CBnViSdURomOtYpP7if2cxt/miUo2jjPoNgiWgNh5VPkUoJNSiIvdN4SIE9eKYw1cKts9ZOmi5tywlRtfJ9EBk2Vrz3Y3ib9rAT/VvSx00glx6LCv14+d6xSslvHaYrzH6hVSGZxzUHgjGApsL1rIesoMULxuma5C8RW9ZUDc7Lt7Je8WOKCAbdS4RwJuUtrOd0pVIbPy4hpRmjZIY4BTtHmSK3flZ1sRQ+8I5d/WFdlRs29BRkS5ubQz5h+v47wI+VFEKUMNLpVenVrUHPFfvWscw="
 
 script:
   - set -e
   - curl -o docker-compose.yml -sSL https://raw.githubusercontent.com/microservices-demo/microservices-demo/master/deploy/docker-compose/docker-compose.yml
   - docker-compose -f docker-compose.yml up -d
   - docker build -t ${GROUP}/${REPO}:${COMMIT} .
-  - docker run --rm --net loadtest_default -t weaveworksdemos/load-test -d 180 -h edge-router -c 250 -r 2500
+  - docker run --rm --net loadtest_default -t ${GROUP}/${REPO}:${COMMIT} -d 180 -h edge-router -c 250 -r 2500
 
 after_success:
   - set -e;
@@ -21,5 +23,5 @@ after_success:
       echo "This is a build triggered by an external PR. Skipping docker push.";
       exit 0;
     fi;
-  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS;
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS;
   - ./push.sh
