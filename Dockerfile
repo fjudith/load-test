@@ -1,7 +1,10 @@
 FROM python:3.7-alpine
 
 # Install locust
-RUN pip install pyzmq locustio faker
+RUN apk add --no-cache python python-dev build-base git libtool pkgconfig autoconf automake wget ca-certificates && \
+    pip install pyzmq locustio faker && \
+    apk del python-dev build-base git libtool pkgconfig autoconf automake wget ca-certificates && \
+    apk add --no-cache libstdc++
 
 ADD locustfile.py /config/locustfile.py
 ADD runLocust.sh /usr/local/bin/runLocust.sh
