@@ -1,3 +1,7 @@
+[![](https://images.microbadger.com/badges/image/fjudith/load-test.svg)](https://microbadger.com/images/fjudith/load-test "Get your own image badge on microbadger.com")
+[![Docker Repository on Quay](https://quay.io/repository/fjudith/load-test/status "Docker Repository on Quay")](https://quay.io/repository/fjudith/load-test)
+[![Build Status](https://travis-ci.org/fjudith/load-test.svg?branch=master)](https://travis-ci.org/fjudith/load-test)
+
 # Load / Integration Tests
 
 These tests simulate actual end user usage of the application. They are used to validate the overall functionality and can also be used to put simulated load on the system. The tests are written using [locust.io](http://locust.io)
